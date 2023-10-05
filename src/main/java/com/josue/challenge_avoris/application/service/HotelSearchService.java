@@ -17,12 +17,14 @@ public class HotelSearchService implements GetHotelSearch, SaveHotelSearch {
 
   @Override
   public Flux<HotelSearch> obtainSimilarBySearchId(String searchId) {
-    return hotelSearchRepository.obtainSimilarBySearchId(searchId);
+    return hotelSearchRepository.obtainSimilarBySearchId(searchId)
+        .onErrorResume(error -> Flux.empty());
   }
 
   @Override
   public Mono<HotelSearch> save(HotelSearch entity) {
-    return hotelSearchRepository.save(entity);
+    return hotelSearchRepository.save(entity)
+        .onErrorResume(error -> Mono.empty());
   }
 
 }
