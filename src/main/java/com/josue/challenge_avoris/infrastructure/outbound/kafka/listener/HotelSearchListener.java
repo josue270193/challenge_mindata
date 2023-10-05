@@ -18,10 +18,7 @@ public class HotelSearchListener {
   @Autowired
   private HotelSearchMongoMapper hotelSearchMongoMapper;
 
-  @KafkaListener(
-      groupId = KafkaConfiguration.GROUP_ID,
-      topics = KafkaConfiguration.HOTEL_SEARCH_TOPIC
-  )
+  @KafkaListener(topics = KafkaConfiguration.HOTEL_SEARCH_TOPIC)
   public void listener(HotelSearchTopic data) {
 
     Mono.just(data)

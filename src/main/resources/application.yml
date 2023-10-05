@@ -10,21 +10,17 @@ spring:
   data:
     mongodb:
       database: challenge_avoris
-#      username: avoris
-#      password: avoris
-#      uri: mongodb://5903-2800-40-52-7c-c717-ba1a-5b5b-c135.ngrok-free.app:27017/
   kafka:
     consumer:
-#      bootstrap-servers: localhost:9092
       auto-offset-reset: earliest
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: challenge
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring:
           json:
             trusted:
               packages: com.josue.challenge_avoris.infrastructure.outbound.kafka.topic
     producer:
-#      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

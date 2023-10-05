@@ -9,13 +9,14 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaConfiguration {
 
   public static final String HOTEL_SEARCH_TOPIC = "hotel_availability_searches";
-  public static final String GROUP_ID = "avoris";
+  private final int PARTITIONS = 5;
+  private final int REPLICAS = 3;
 
   @Bean
   public NewTopic hotelAvailabilitySearchesTopic() {
     return TopicBuilder.name(HOTEL_SEARCH_TOPIC)
-        .partitions(5)
-        .replicas(1)
+        .partitions(PARTITIONS)
+        .replicas(REPLICAS)
         .build();
   }
 
