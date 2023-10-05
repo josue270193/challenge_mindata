@@ -5,6 +5,7 @@ import com.josue.challenge_avoris.application.request.HotelSearchRequest;
 import com.josue.challenge_avoris.application.response.HotelCountResponse;
 import com.josue.challenge_avoris.application.response.HotelSearchResponse;
 import com.josue.challenge_avoris.application.service.HotelSearchService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,7 @@ public class HotelSearchController {
   private HotelSearchMapper hotelSearchMapper;
 
   @PostMapping("/search")
-  public Mono<HotelSearchResponse> saveSearch(@RequestBody HotelSearchRequest request) {
+  public Mono<HotelSearchResponse> saveSearch(@Valid @RequestBody HotelSearchRequest request) {
     return Mono.just(request)
         .map(hotelSearchMapper::fromSearchRequestToEntity)
         .flatMap(hotelSearchService::save)
