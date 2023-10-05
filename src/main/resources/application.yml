@@ -1,0 +1,25 @@
+logging:
+  level:
+    root: INFO
+    web: DEBUG
+    org:
+      springframework:
+        data: DEBUG
+
+spring:
+  data:
+    mongodb:
+      database: challenge_avoris
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.josue.challenge_avoris.infrastructure.outbound.kafka.topic
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
