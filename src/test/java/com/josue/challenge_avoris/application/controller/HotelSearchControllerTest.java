@@ -97,6 +97,90 @@ class HotelSearchControllerTest {
   }
 
   @Test
+  void whenSearchSaveMissingCheckInThenError() {
+    var request = new HotelSearchRequest(
+        UUID.randomUUID().toString(),
+        null,
+        LocalDate.of(2023, 1, 1),
+        List.of(1)
+    );
+
+    webClient.post()
+        .uri(PATH_SEARCH)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(BodyInserters.fromValue(request))
+        .exchange()
+        .expectStatus()
+        .is4xxClientError();
+    verify(hotelSearchService, times(0)).save(any());
+    verify(hotelSearchMapper, times(0)).fromSearchRequestToEntity(any());
+    verify(hotelSearchMapper, times(0)).fromEntityToSearchResponse(any());
+  }
+
+  @Test
+  void whenSearchSaveMissingCheckOutThenError() {
+    var request = new HotelSearchRequest(
+        UUID.randomUUID().toString(),
+        LocalDate.of(2023, 1, 1),
+        null,
+        List.of(1)
+    );
+
+    webClient.post()
+        .uri(PATH_SEARCH)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(BodyInserters.fromValue(request))
+        .exchange()
+        .expectStatus()
+        .is4xxClientError();
+    verify(hotelSearchService, times(0)).save(any());
+    verify(hotelSearchMapper, times(0)).fromSearchRequestToEntity(any());
+    verify(hotelSearchMapper, times(0)).fromEntityToSearchResponse(any());
+  }
+
+  @Test
+  void whenSearchSaveMissingAgeThenError() {
+    var request = new HotelSearchRequest(
+        UUID.randomUUID().toString(),
+        LocalDate.of(2023, 1, 1),
+        LocalDate.of(2023, 1, 1),
+        null
+    );
+
+    webClient.post()
+        .uri(PATH_SEARCH)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(BodyInserters.fromValue(request))
+        .exchange()
+        .expectStatus()
+        .is4xxClientError();
+    verify(hotelSearchService, times(0)).save(any());
+    verify(hotelSearchMapper, times(0)).fromSearchRequestToEntity(any());
+    verify(hotelSearchMapper, times(0)).fromEntityToSearchResponse(any());
+  }
+
+  @Test
+  void whenSearchSaveMissingHotelIdThenError() {
+    var request = new HotelSearchRequest(
+        null,
+        LocalDate.of(2023, 1, 1),
+        LocalDate.of(2023, 1, 1),
+        List.of(1)
+    );
+
+    webClient.post()
+        .uri(PATH_SEARCH)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(BodyInserters.fromValue(request))
+        .exchange()
+        .expectStatus()
+        .is4xxClientError();
+    verify(hotelSearchService, times(0)).save(any());
+    verify(hotelSearchMapper, times(0)).fromSearchRequestToEntity(any());
+    verify(hotelSearchMapper, times(0)).fromEntityToSearchResponse(any());
+  }
+
+  @Test
   void whenCountSearchOkThenOk() {
     var searchId = UUID.randomUUID().toString();
 
@@ -115,6 +199,22 @@ class HotelSearchControllerTest {
     verify(hotelSearchService, times(1)).obtainSimilarBySearchId(any());
     verify(hotelSearchMapper, times(1)).fromEntityToCountResponse(any(), any());
   }
+
+  @Test
+  void whenCountSearchMissingSearchIdThenOk() {
+    webClient.get()
+        .uri(uriBuilder -> uriBuilder.path(PATH_COUNT)
+            .build())
+        .exchange()
+        .expectStatus()
+        .is4xxClientError();
+    verify(hotelSearchService, times(0)).save(any());
+    verify(hotelSearchMapper, times(0)).fromSearchRequestToEntity(any());
+    verify(hotelSearchMapper, times(0)).fromEntityToSearchResponse(any());
+    verify(hotelSearchService, times(0)).obtainSimilarBySearchId(any());
+    verify(hotelSearchMapper, times(0)).fromEntityToCountResponse(any(), any());
+  }
+
 
   private void setUpMockSearchSave(HotelSearchRequest request) {
     var searchId = UUID.randomUUID().toString();
